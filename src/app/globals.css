@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --foreground-rgb: 0, 0, 0;
+  --primary-color: #8C161E;
+  --light-primary-color: #fcc1c4;
+  --dark-primary-color: #6c0f16;
+  --secondary-color: #327916;
+}
+
+.btn {
+  background-color: var(--primary-color); 
+  color: white; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  border: none; 
+  cursor: pointer; 
+  border-radius: 5px; 
+  transition: background-color 0.3s, 
+}
+
+.btn:hover {
+  background-color: var(--dark-primary-color);  
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+}
+
+.btn:active {
+  background-color: var(--secondary-color); 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.hoverable{
+  transition: background-color 0.3s;
+  border-radius: 10px;
+  padding: 10px;
+}
+.hoverable:hover{
+  background-color: var(--light-primary-color);  
+}
+
+.overlay{
+  position: absolute;
+  z-index: 1;
+}
