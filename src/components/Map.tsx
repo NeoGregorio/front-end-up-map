@@ -87,7 +87,7 @@ export default function Map({
         const marker = new AdvancedMarkerElement({
           position: { lat: store.lat, lng: store.lng },
           map: mapInstanceRef.current,
-          title: store.name,
+          title: store.store_id.toString(), //store.name,
           content: pinBackground.element,
         });
 

@@ -61,7 +61,13 @@ export default function InfoBar({ storeID, open, toggleDrawer }: InfoBarProps) {
     {
       text: "URL",
       icon: <PublicIcon className="text-secondary" />,
-      data: store?.url,
+      data: store?.url ? (
+        <a href={store.url} target="_blank" rel="noopener noreferrer">
+          {store.url}
+        </a>
+      ) : (
+        "N/A"
+      ),
     },
     {
       text: "Wheelchair Accessible Entrance",

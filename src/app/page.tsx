@@ -27,8 +27,7 @@ export default function Main() {
 
   // pass only the types of stores that are checked to the Map
   const mapData = storesList
-    // filter the stores based on the checked layers
-    .filter((store) => layersState[store.type as keyof typeof layersState])
+    .filter((store) => layersState[store.type as keyof typeof layersState]) // filter the stores based on the checked layers
     .map((store) => ({
       store_id: store.store_id,
       name: store.name,
