@@ -1,6 +1,6 @@
 "use client";
-import Map from "../components/Map";
-import React, { useState } from "react";
+import DisplayMap from "@/components/Map";
+import React, { useState, useEffect } from "react";
 import storesList from "../data/stores-list.json";
 import SelectLayers from "@/components/ToggleLayer";
 import NavBar from "@/components/NavBar";
@@ -66,8 +66,7 @@ export default function Main() {
           />
         </div>
       </div>
-
-      <Map
+      <DisplayMap
         plotDetailsArr={mapData}
         setInfoDisplay={setInfoDisplay}
         setOpen={setOpen}

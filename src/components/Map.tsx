@@ -1,6 +1,14 @@
-import { useState, useEffect, useRef } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
-// import { MarkerClusterer } from "@googlemaps/markerclusterer";
+"use client";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import {
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  Pin,
+  useMap,
+} from "@vis.gl/react-google-maps";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import type { Marker } from "@googlemaps/markerclusterer";
 
 interface plotDetails {
   store_id: number;
@@ -16,109 +24,99 @@ interface MapProps {
   setOpen: (value: boolean) => void; // callback function to open the drawer
 }
 
-export default function Map({
+const UPposition = { lat: 14.655582658243429, lng: 121.06909051147275 };
+const zoom = 15.8;
+const mapID = "DEMO_MAP_ID";
+
+export default function DisplayMap({
   plotDetailsArr,
   setInfoDisplay,
   setOpen,
 }: MapProps) {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const points = plotDetailsArr.map((store) => ({
+    name: store.name,
+    rating: store.rating,
+    lat: store.lat, // Example latitude
+    lng: store.lng, // Example longitude
+    store_id: String(store.store_id), // Example store ID
+  }));
 
-  // to store the markers
-  const [Markers, setMarkers] = useState<
-    google.maps.marker.AdvancedMarkerElement[]
-  >([]);
-  //const markerCluster = new MarkerClusterer({ Markers, map });
-
-  // Initialize the map (only once)
-  useEffect(() => {
-    const initMap = async () => {
-      const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
-        version: "weekly",
-      });
-
-      const { Map } = await loader.importLibrary("maps");
-      // to center the map at UP Diliman
-      const firstCoords = { lat: 14.655582658243429, lng: 121.06909051147275 };
-
-      // map options
-      const mapOptions: google.maps.MapOptions = {
-        center: firstCoords,
-        zoom: 15.8,
-        mapId: "sample_map_id",
-      };
-
-      // setup the map
-      const map = new Map(mapRef.current as HTMLDivElement, mapOptions);
-      mapInstanceRef.current = map;
-    };
-    initMap();
-  }, []);
-
-  // Place markers on the map
-  useEffect(() => {
-    const placeMarkers = async () => {
-      // Import the Marker library
-      const { AdvancedMarkerElement, PinElement } =
-        (await google.maps.importLibrary(
-          "marker"
-        )) as google.maps.MarkerLibrary;
-
-      // Get the store IDs from the plotDetailsArr
-      const storeIDs = plotDetailsArr.map((store) => store.store_id);
-
-      // Clear markers not in storeIDs
-      Markers.forEach((mrkr) => {
-        if (!storeIDs.includes(Number(mrkr.title))) {
-          mrkr.map = null; // remove marker if not in storeIDs
-        }
-      });
-
-      // Add markers for each store in plotDetailsArr
-      plotDetailsArr.forEach((store) => {
-        // Design the pin
-        const pinBackground = new PinElement({
-          background: SetColor(store.rating)[0],
-          borderColor: SetColor(store.rating)[1],
-          glyph: store.rating.toString(),
-        });
-
-        const marker = new AdvancedMarkerElement({
-          position: { lat: store.lat, lng: store.lng },
-          map: mapInstanceRef.current,
-          title: store.store_id.toString(), //store.name,
-          content: pinBackground.element,
-        });
-
-        // Add an info window to the marker
-        // const infoWindow = new google.maps.InfoWindow({
-        //   content: `<div style="color: black;">${store.name}</div>`,
-        // });
-
-        marker.addListener("click", () => {
-          setInfoDisplay(store.store_id); // set the store ID to display info
-          setOpen(true); // open the drawer
-          // infoWindow.open(mapInstanceRef.current, marker);
-        });
-        // push the new marker to the Markers state
-        Markers.push(marker);
-      });
-    };
-    placeMarkers();
-  }, [plotDetailsArr]);
-
-  // Marker Clusterer
-  // const clusterer = useRef<MarkerClusterer | null>(null);
-  // useEffect(() => {
-  //   if (!mapInstanceRef.current) return;
-  //   if (!clusterer.current) {
-  //     clusterer.current = new MarkerClusterer({ map: mapInstanceRef.current });
-  //   }
-  // }, [mapInstanceRef.current]);
-
-  return <div ref={mapRef} style={{ width: "100%", height: "100%" }} />;
+  return (
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
+      <div style={{ height: "100vh", width: "100%" }}>
+        <Map defaultZoom={zoom} defaultCenter={UPposition} mapId={mapID}>
+          <Markers
+            points={points}
+            setInfoDisplay={setInfoDisplay}
+            setOpen={setOpen}
+          />
+        </Map>
+      </div>
+    </APIProvider>
+  );
 }
+
+//////////////////////////////
+type Point = google.maps.LatLngLiteral & { store_id: string } & {
+  name: string;
+} & { rating: number };
+type Props = {
+  points: Point[];
+  setInfoDisplay: (value: any) => void;
+  setOpen: (value: boolean) => void;
+};
+
+const Markers = ({ points, setInfoDisplay, setOpen }: Props) => {
+  const map = useMap();
+  const [markers, setMarkers] = useState<{ [key: string]: Marker }>({}); // store the markers
+  const clusterer = useRef<MarkerClusterer | null>(null); // reference to the marker clusterer
+
+  // setup the marker clusterer
+  useEffect(() => {
+    if (!map) return; // if no map, not ready to setup clusterer
+    if (!clusterer.current) clusterer.current = new MarkerClusterer({ map }); // if no clusterer, create a new one
+  }, [map]);
+
+  // anytime the markers change, clear the clusterer and add the new markers
+  useEffect(() => {
+    clusterer.current?.clearMarkers();
+    clusterer.current?.addMarkers(Object.values(markers));
+  }, [markers]);
+
+  //set the marker reference to the markers state
+  const setMarkerRef = (marker: Marker | null, key: string) => {
+    if (marker && markers[key]) return; // if marker and marker in the state, return
+    if (!marker && !markers[key]) return; // if no marker and no marker in the state, return
+
+    setMarkers((prev) => {
+      if (marker) {
+        return { ...prev, [key]: marker };
+      } else {
+        const newMarkers = { ...prev };
+        delete newMarkers[key];
+        return newMarkers;
+      }
+    });
+  };
+
+  return points.map((store) => (
+    <AdvancedMarker
+      key={store.store_id}
+      position={{ lat: store.lat, lng: store.lng }}
+      ref={(marker) => setMarkerRef(marker, String(store.store_id.toString()))}
+      onClick={() => {
+        setInfoDisplay(Number(store.store_id)); // set the store ID to display info
+        setOpen(true); // open the drawer
+      }}
+    >
+      <Pin
+        background={SetColor(store.rating)[0]}
+        borderColor={SetColor(store.rating)[1]}
+        glyph={store.rating.toString()}
+      />
+    </AdvancedMarker>
+  ));
+};
 
 const SetColor = (rating: number) => {
   switch (true) {
