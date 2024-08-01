@@ -55,7 +55,7 @@ export default function Main() {
   //   }));
 
   const [storesData, setStoresData] = useState<Store[]>([]);
-  storesData.filter(
+  const mapData = storesData.filter(
     (store) => layersState[store.type as keyof typeof layersState]
   );
 
@@ -93,7 +93,7 @@ export default function Main() {
         </div>
       </div>
       <DisplayMap
-        plotDetailsArr={storesData}
+        plotDetailsArr={mapData}
         setInfoDisplay={setInfoDisplay}
         setOpen={setOpen}
       />
