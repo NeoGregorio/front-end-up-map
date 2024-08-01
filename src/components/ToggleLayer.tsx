@@ -13,15 +13,15 @@ import {
 
 interface CheckboxProps {
   layersState: {
-    Restaurant: boolean;
-    Cafe: boolean;
-    Store: boolean;
+    restaurant: boolean;
+    cafe: boolean;
+    store: boolean;
   };
   handleLayersChange: (newState: any) => void;
 }
 
 interface CheckBoxes {
-  name: "Restaurant" | "Cafe" | "Store";
+  name: "restaurant" | "cafe" | "store";
   label: string;
 }
 
@@ -31,9 +31,9 @@ export default function SelectLayers({
 }: CheckboxProps) {
   // Checkboxes name and label for map
   const checkBoxes: CheckBoxes[] = [
-    { name: "Restaurant", label: "Restaurants" },
-    { name: "Cafe", label: "Cafes" },
-    { name: "Store", label: "Stores" },
+    { name: "restaurant", label: "Restaurants" },
+    { name: "cafe", label: "Cafes" },
+    { name: "store", label: "Stores" },
   ];
   // Content
   const Selection = (

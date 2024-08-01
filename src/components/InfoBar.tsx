@@ -110,11 +110,11 @@ export default function InfoBar({ storeID, open, toggleDrawer }: InfoBarProps) {
 
 const getIcon = (storeType: string) => {
   switch (storeType) {
-    case "Restaurant":
+    case "restaurant":
       return <RestaurantIcon className="text-secondary" />;
-    case "Cafe":
+    case "cafe":
       return <LocalCafeIcon className="text-secondary" />;
-    case "Store":
+    case "store":
       return <StoreIcon className="text-secondary" />;
     default:
       return <></>;
