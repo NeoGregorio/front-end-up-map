@@ -6,8 +6,15 @@ import SelectLayers from "@/components/ToggleLayer";
 import NavBar from "@/components/NavBar";
 import LegendWindow from "@/components/Legend";
 import InfoBar from "@/components/InfoBar";
+// import { getStore } from "@/components/SampleFetch";
 
 export default function Main() {
+  // const fetchStore = async () => {
+  //   const store = await getStore({ id: 42 });
+  //   return store.name;
+  // };
+  // const result = fetchStore();
+
   // Callback function to handle the state change of the checkboxes child component
   const [layersState, setLayersState] = useState({
     Restaurant: true, // default values, display all
@@ -74,3 +81,13 @@ export default function Main() {
     </div>
   );
 }
+// // "use client";
+// import { getStore } from "@/components/SampleFetch";
+// export default function Main() {
+//   const fetchStore = async () => {
+//     const store = await getStore({ id: 42 });
+//     return store.name;
+//   };
+//   const result = fetchStore();
+//   return <p>{result}</p>;
+// }
