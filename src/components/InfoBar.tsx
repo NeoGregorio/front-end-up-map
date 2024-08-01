@@ -72,7 +72,7 @@ export default function InfoBar({ storeID, open, toggleDrawer }: InfoBarProps) {
     {
       text: "Wheelchair Accessible Entrance",
       icon: <AccessibleIcon className="text-secondary" />,
-      data: store?.wheelchair_accessible_entrance,
+      data: store?.wheelechair_accessible_entrance,
     },
   ];
 
