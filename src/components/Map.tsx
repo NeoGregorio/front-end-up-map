@@ -12,6 +12,11 @@ import { getStores } from "@/data/SampleFetch";
 
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+
+import StoreIcon from "@mui/icons-material/Store";
+import LocalCafeIcon from "@mui/icons-material/LocalCafe";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+
 // Global Variables
 const UPposition = { lat: 14.655582658243429, lng: 121.06909051147275 };
 const zoom = 15.8;
@@ -35,14 +40,14 @@ interface MapProps {
     cafe: boolean;
     store: boolean;
   };
-  setNewInfoDisplay: (value: any) => void;
+  setInfoDisplay: (value: any) => void;
   setOpen: (value: boolean) => void; // callback function to open the drawer
 }
 
 // Main Function
 export default function DisplayMap({
   layersState,
-  setNewInfoDisplay,
+  setInfoDisplay,
   setOpen,
 }: MapProps) {
   // Fetching from database
@@ -75,7 +80,7 @@ export default function DisplayMap({
         <Map defaultZoom={zoom} defaultCenter={UPposition} mapId={mapID}>
           <Markers
             points={points}
-            setNewInfoDisplay={setNewInfoDisplay}
+            setInfoDisplay={setInfoDisplay}
             setOpen={setOpen}
           />
         </Map>
@@ -98,11 +103,11 @@ type Point = google.maps.LatLngLiteral & Store; //& { store_id: string } & {
 // } & { rating: number };
 type Props = {
   points: Point[];
-  setNewInfoDisplay: (value: any) => void;
+  setInfoDisplay: (value: any) => void;
   setOpen: (value: boolean) => void;
 };
 
-const Markers = ({ points, setNewInfoDisplay, setOpen }: Props) => {
+const Markers = ({ points, setInfoDisplay, setOpen }: Props) => {
   const map = useMap();
   const [markers, setMarkers] = useState<{ [key: string]: Marker }>({}); // store the markers
   const clusterer = useRef<MarkerClusterer | null>(null); // reference to the marker clusterer
@@ -141,17 +146,30 @@ const Markers = ({ points, setNewInfoDisplay, setOpen }: Props) => {
       position={{ lat: store.lat, lng: store.lng }}
       ref={(marker) => setMarkerRef(marker, String(store.store_id.toString()))}
       onClick={() => {
-        setNewInfoDisplay(store); // pass the store object
+        setInfoDisplay(store); // pass the store object
         setOpen(true); // open the drawer
       }}
     >
       <Pin
         background={SetColor(store.rating)[0]}
         borderColor={SetColor(store.rating)[1]}
-        glyph={store.rating.toString()}
-      />
+        //glyph={setIcon2(store.type)}
+      >
+        {setIcon(store.type)}
+      </Pin>
     </AdvancedMarker>
   ));
+};
+
+const setIcon = (type: string) => {
+  switch (type) {
+    case "restaurant":
+      return <RestaurantIcon fontSize="small" />;
+    case "cafe":
+      return <LocalCafeIcon fontSize="small" />;
+    default:
+      return <StoreIcon fontSize="small" />;
+  }
 };
 
 const SetColor = (rating: number) => {

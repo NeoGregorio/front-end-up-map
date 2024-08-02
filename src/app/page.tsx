@@ -28,7 +28,7 @@ export default function Main() {
   ////////////////////////////////
 
   // Infobar State:
-  const [newinfoDisplay, setnewInfoDisplay] = useState({
+  const [infoDisplay, setInfoDisplay] = useState({
     name: null,
     rating: null,
     address: null,
@@ -61,7 +61,7 @@ export default function Main() {
 
         <div className="flex-1 flex justify-end">
           <InfoBar
-            store={newinfoDisplay}
+            store={infoDisplay}
             open={open}
             toggleDrawer={toggleDrawer(false)}
           />
@@ -69,7 +69,7 @@ export default function Main() {
       </div>
 
       <DisplayMap
-        setNewInfoDisplay={setnewInfoDisplay}
+        setInfoDisplay={setInfoDisplay}
         layersState={layersState}
         setOpen={setOpen}
       />
