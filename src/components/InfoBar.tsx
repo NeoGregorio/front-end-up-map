@@ -53,7 +53,7 @@ export default function InfoBar({ store, open, toggleDrawer }: InfoBarProps) {
     {
       text: "Store Type",
       icon: getIcon(String(store?.type)),
-      data: store?.type,
+      data: store?.type?.charAt(0).toUpperCase() + store?.type?.slice(1),
     },
     {
       text: "URL",
@@ -69,7 +69,7 @@ export default function InfoBar({ store, open, toggleDrawer }: InfoBarProps) {
     {
       text: "Wheelchair Accessible Entrance",
       icon: <AccessibleIcon className="text-secondary" />,
-      data: store?.wheelechair_accessible_entrance,
+      data: wheelechairAccess(store?.wheelechair_accessible_entrance),
     },
   ];
 
@@ -104,6 +104,17 @@ export default function InfoBar({ store, open, toggleDrawer }: InfoBarProps) {
     </Drawer>
   );
 }
+
+const wheelechairAccess = (wae: boolean | null) => {
+  switch (wae) {
+    case null:
+      return null;
+    case false:
+      return "No Wheelechair Accessible Entrance";
+    default:
+      return "Wheelechair Accessible Entrance";
+  }
+};
 
 const getIcon = (storeType: string) => {
   switch (storeType) {

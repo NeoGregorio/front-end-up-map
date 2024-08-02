@@ -18,9 +18,15 @@ export default function NavBar() {
         variant="dense"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Typography className="font-bold" variant="h5" component="div">
-          Where To Go In UP Diliman?
-        </Typography>
+        <div>
+          <p className="font-bold text-xl sm:text-2xl">
+            Where To Go In UP Diliman?
+          </p>
+          <p className="flex justify-center text-xs">
+            Developed by Herminio Gregorio for Navagis
+          </p>
+        </div>
+
         <img
           src="/logo.svg"
           className="max-w-full max-h-full p-2 ml-2"
