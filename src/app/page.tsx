@@ -1,21 +1,10 @@
 "use client";
 import DisplayMap from "@/components/Map";
-import React, { useState, useEffect } from "react";
-import storesList from "../data/stores-list.json";
+import React, { useState } from "react";
 import SelectLayers from "@/components/ToggleLayer";
 import NavBar from "@/components/NavBar";
 import LegendWindow from "@/components/Legend";
 import InfoBar from "@/components/InfoBar";
-import { getStores } from "@/data/SampleFetch";
-
-type Store = {
-  store_id: number;
-  name: string;
-  type: string;
-  rating: number;
-  lat: number;
-  lng: number;
-};
 
 export default function Main() {
   // Callback function to handle the state change of the checkboxes child component
@@ -34,6 +23,7 @@ export default function Main() {
     console.log(newState);
     setLayersState(newState);
   };
+
   ////////////////////////////////
 
   // Infobar State:
@@ -42,32 +32,6 @@ export default function Main() {
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
-  ////////////////////////////////
-  // pass only the types of stores that are checked to the Map
-  // const mapData = storesList
-  //   .filter((store) => layersState[store.type as keyof typeof layersState]) // filter the stores based on the checked layers
-  //   .map((store) => ({
-  //     store_id: store.store_id,
-  //     name: store.name,
-  //     rating: Number(store.rating),
-  //     lat: parseFloat(store.coordinates.split(", ")[0]),
-  //     lng: parseFloat(store.coordinates.split(", ")[1]),
-  //   }));
-
-  const [storesData, setStoresData] = useState<Store[]>([]);
-  const mapData = storesData.filter(
-    (store) => layersState[store.type as keyof typeof layersState]
-  );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getStores();
-      setStoresData(data);
-      console.log(data);
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <div className="flex flex-col h-screen">
@@ -92,8 +56,9 @@ export default function Main() {
           />
         </div>
       </div>
+
       <DisplayMap
-        plotDetailsArr={mapData}
+        layersState={layersState}
         setInfoDisplay={setInfoDisplay}
         setOpen={setOpen}
       />

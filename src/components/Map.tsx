@@ -1,5 +1,3 @@
-// "use client";
-
 import { useState, useEffect, useRef } from "react";
 import {
   APIProvider,
@@ -10,37 +8,67 @@ import {
 } from "@vis.gl/react-google-maps";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
+import { getStores } from "@/data/SampleFetch";
 
-interface plotDetails {
-  store_id: number;
-  name: string;
-  rating: number;
-  lat: number;
-  lng: number;
-}
-
-interface MapProps {
-  plotDetailsArr: plotDetails[]; // array of store details, changes according to the selected layers in page.tsx
-  setInfoDisplay: (value: any) => void; // callback function to set the store ID to display info
-  setOpen: (value: boolean) => void; // callback function to open the drawer
-}
-
+// Global Variables
 const UPposition = { lat: 14.655582658243429, lng: 121.06909051147275 };
 const zoom = 15.8;
 const mapID = "DEMO_MAP_ID";
 
+// Typedefs
+type Store = {
+  store_id: number;
+  name: string;
+  type: string;
+  rating: number;
+  lat: number;
+  lng: number;
+};
+interface MapProps {
+  layersState: {
+    restaurant: boolean;
+    cafe: boolean;
+    store: boolean;
+  };
+  setInfoDisplay: (value: any) => void; // callback function to set the store ID to display info
+  setOpen: (value: boolean) => void; // callback function to open the drawer
+}
+
+// Main Function
 export default function DisplayMap({
-  plotDetailsArr,
+  layersState,
   setInfoDisplay,
   setOpen,
 }: MapProps) {
-  const points = plotDetailsArr.map((store) => ({
-    name: store.name,
-    rating: store.rating,
-    lat: store.lat, // Example latitude
-    lng: store.lng, // Example longitude
-    store_id: String(store.store_id), // Example store ID
-  }));
+  // Fetching from database
+  const [storesData, setStoresData] = useState<Store[]>([]);
+  const points = storesData
+    .map((store) => ({
+      name: store.name,
+      type: store.type,
+      rating: store.rating,
+      lat: store.lat,
+      lng: store.lng,
+      store_id: String(store.store_id),
+    }))
+    .filter((store) => layersState[store.type as keyof typeof layersState]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getStores();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        setStoresData(data);
+        // console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
@@ -57,7 +85,7 @@ export default function DisplayMap({
   );
 }
 
-//////////////////////////////
+// Displaying of Markers and using the Clusterer
 type Point = google.maps.LatLngLiteral & { store_id: string } & {
   name: string;
 } & { rating: number };
