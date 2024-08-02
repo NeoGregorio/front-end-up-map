@@ -15,6 +15,6 @@ export const getStores = async () => {
     return data;
   } catch (error) {
     console.error("Error fetching stores:", error);
-    return { error: "Database connection not found or other error occurred" };
+    return { error: "Database connection not found" };
   }
 };

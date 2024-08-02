@@ -1,5 +1,3 @@
-import storesList from "../data/stores-list.json";
-
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -21,14 +19,13 @@ import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 interface InfoBarProps {
-  storeID: number | null;
+  store: any;
   open: boolean;
   toggleDrawer: (open: boolean) => void;
 }
 
-// storeID may be null if no store is selected at first
-export default function InfoBar({ storeID, open, toggleDrawer }: InfoBarProps) {
-  const store = storesList.find((store) => store.store_id === storeID); // fetches store
+export default function InfoBar({ store, open, toggleDrawer }: InfoBarProps) {
+  console.log(store);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const display = [

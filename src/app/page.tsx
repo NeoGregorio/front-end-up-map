@@ -27,7 +27,14 @@ export default function Main() {
   ////////////////////////////////
 
   // Infobar State:
-  const [infoDisplay, setInfoDisplay] = useState(null); // To set what information to display (specified by store_id)
+  const [newinfoDisplay, setnewInfoDisplay] = useState({
+    name: null,
+    rating: null,
+    address: null,
+    type: null,
+    url: null,
+    wheelechair_accessible_entrance: null,
+  });
   const [open, setOpen] = useState(false); // Drawer state
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -50,7 +57,7 @@ export default function Main() {
 
         <div className="flex-1 flex justify-end">
           <InfoBar
-            storeID={infoDisplay}
+            store={newinfoDisplay}
             open={open}
             toggleDrawer={toggleDrawer(false)}
           />
@@ -58,8 +65,8 @@ export default function Main() {
       </div>
 
       <DisplayMap
+        setNewInfoDisplay={setnewInfoDisplay}
         layersState={layersState}
-        setInfoDisplay={setInfoDisplay}
         setOpen={setOpen}
       />
     </div>

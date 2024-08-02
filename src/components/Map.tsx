@@ -10,6 +10,8 @@ import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
 import { getStores } from "@/data/SampleFetch";
 
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 // Global Variables
 const UPposition = { lat: 14.655582658243429, lng: 121.06909051147275 };
 const zoom = 15.8;
@@ -21,6 +23,9 @@ type Store = {
   name: string;
   type: string;
   rating: number;
+  address: string;
+  url: string;
+  wheelechair_accessible_entrance: boolean;
   lat: number;
   lng: number;
 };
@@ -30,28 +35,23 @@ interface MapProps {
     cafe: boolean;
     store: boolean;
   };
-  setInfoDisplay: (value: any) => void; // callback function to set the store ID to display info
+  setNewInfoDisplay: (value: any) => void;
   setOpen: (value: boolean) => void; // callback function to open the drawer
 }
 
 // Main Function
 export default function DisplayMap({
   layersState,
-  setInfoDisplay,
+  setNewInfoDisplay,
   setOpen,
 }: MapProps) {
   // Fetching from database
   const [storesData, setStoresData] = useState<Store[]>([]);
-  const points = storesData
-    .map((store) => ({
-      name: store.name,
-      type: store.type,
-      rating: store.rating,
-      lat: store.lat,
-      lng: store.lng,
-      store_id: String(store.store_id),
-    }))
-    .filter((store) => layersState[store.type as keyof typeof layersState]);
+  const [error, setError] = useState<boolean>();
+
+  const points = storesData.filter(
+    (store) => layersState[store.type as keyof typeof layersState]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,9 +61,8 @@ export default function DisplayMap({
           throw new Error(data.error);
         }
         setStoresData(data);
-        // console.log(data);
       } catch (error) {
-        console.log(error);
+        setError(true);
       }
     };
 
@@ -76,26 +75,34 @@ export default function DisplayMap({
         <Map defaultZoom={zoom} defaultCenter={UPposition} mapId={mapID}>
           <Markers
             points={points}
-            setInfoDisplay={setInfoDisplay}
+            setNewInfoDisplay={setNewInfoDisplay}
             setOpen={setOpen}
           />
         </Map>
+        <Snackbar
+          open={error}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert severity="error" variant="filled">
+            Database connection not found. Please Try reloading the page.
+          </Alert>
+        </Snackbar>
       </div>
     </APIProvider>
   );
 }
 
 // Displaying of Markers and using the Clusterer
-type Point = google.maps.LatLngLiteral & { store_id: string } & {
-  name: string;
-} & { rating: number };
+type Point = google.maps.LatLngLiteral & Store; //& { store_id: string } & {
+//   name: string;
+// } & { rating: number };
 type Props = {
   points: Point[];
-  setInfoDisplay: (value: any) => void;
+  setNewInfoDisplay: (value: any) => void;
   setOpen: (value: boolean) => void;
 };
 
-const Markers = ({ points, setInfoDisplay, setOpen }: Props) => {
+const Markers = ({ points, setNewInfoDisplay, setOpen }: Props) => {
   const map = useMap();
   const [markers, setMarkers] = useState<{ [key: string]: Marker }>({}); // store the markers
   const clusterer = useRef<MarkerClusterer | null>(null); // reference to the marker clusterer
@@ -134,7 +141,7 @@ const Markers = ({ points, setInfoDisplay, setOpen }: Props) => {
       position={{ lat: store.lat, lng: store.lng }}
       ref={(marker) => setMarkerRef(marker, String(store.store_id.toString()))}
       onClick={() => {
-        setInfoDisplay(Number(store.store_id)); // set the store ID to display info
+        setNewInfoDisplay(store); // pass the store object
         setOpen(true); // open the drawer
       }}
     >
