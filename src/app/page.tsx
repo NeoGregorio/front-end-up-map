@@ -5,6 +5,7 @@ import SelectLayers from "@/components/ToggleLayer";
 import NavBar from "@/components/NavBar";
 import LegendWindow from "@/components/Legend";
 import InfoBar from "@/components/InfoBar";
+import PieChart from "@/components/PieChart";
 
 export default function Main() {
   // Callback function to handle the state change of the checkboxes child component
@@ -20,7 +21,7 @@ export default function Main() {
       ...layersState, // to keep the state of the other checkboxes
       [event.target.name]: event.target.checked, // to update the state of the checkbox that was clicked
     };
-    console.log(newState);
+    //console.log(newState);
     setLayersState(newState);
   };
 
@@ -45,13 +46,16 @@ export default function Main() {
       <NavBar />
 
       <div>
-        <div className="overlay m-2.5 mt-24 max-w-40">
+        <div className="overlay m-2.5 mt-24">
           <SelectLayers
             layersState={layersState}
             handleLayersChange={handleLayersChange}
           />
-          <div className="mt-4">
+          <div className="mt-2">
             <LegendWindow />
+          </div>
+          <div className="flex justify-center mt-2">
+            <PieChart />
           </div>
         </div>
 

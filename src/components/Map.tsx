@@ -47,7 +47,7 @@ export default function DisplayMap({
 }: MapProps) {
   // Fetching from database
   const [storesData, setStoresData] = useState<Store[]>([]);
-  const [error, setError] = useState<boolean>();
+  //const [error, setError] = useState<boolean>();
 
   const points = storesData.filter(
     (store) => layersState[store.type as keyof typeof layersState]
@@ -62,7 +62,7 @@ export default function DisplayMap({
         }
         setStoresData(data);
       } catch (error) {
-        setError(true);
+        setStoresData([]);
       }
     };
 
@@ -80,11 +80,11 @@ export default function DisplayMap({
           />
         </Map>
         <Snackbar
-          open={error}
+          open={storesData.length === 0}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
           <Alert severity="error" variant="filled">
-            Database connection not found. Please Try reloading the page.
+            Database connection not found. Please try reloading the page.
           </Alert>
         </Snackbar>
       </div>

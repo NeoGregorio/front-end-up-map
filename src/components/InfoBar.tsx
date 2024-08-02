@@ -25,7 +25,7 @@ interface InfoBarProps {
 }
 
 export default function InfoBar({ store, open, toggleDrawer }: InfoBarProps) {
-  console.log(store);
+  //console.log(store);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const display = [

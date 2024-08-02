@@ -35,7 +35,7 @@ export default function LegendWindow() {
       <CardContent>
         <h1 className="font-bold mb-2">Legend:</h1>
         {Legends.map((leg) => (
-          <div key={leg.text} className="flex mb-1">
+          <div key={leg.text} className="flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
@@ -54,7 +54,7 @@ export default function LegendWindow() {
   return (
     <>
       <div className="hidden sm:block">{Legend}</div>
-      <div className="sm:hidden mt-4">
+      <div className="sm:hidden">
         <Popover>
           <PopoverTrigger className="btn font-bold">Legend</PopoverTrigger>
           <PopoverContent className="w-auto p-0 sm:hidden">

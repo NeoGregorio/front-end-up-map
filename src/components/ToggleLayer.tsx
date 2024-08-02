@@ -65,7 +65,7 @@ export default function SelectLayers({
   return (
     <>
       <div className="hidden sm:block">{Selection}</div>
-      <div className="sm:hidden mt-4">
+      <div className="sm:hidden">
         <Popover>
           <PopoverTrigger className="btn font-bold">Layers</PopoverTrigger>
 
