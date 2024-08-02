@@ -52,7 +52,7 @@ export default function DisplayMap({
 }: MapProps) {
   // Fetching from database
   const [storesData, setStoresData] = useState<Store[]>([]);
-  //const [error, setError] = useState<boolean>();
+  const [error, setError] = useState<boolean>();
 
   const points = storesData.filter(
     (store) => layersState[store.type as keyof typeof layersState]
@@ -67,7 +67,7 @@ export default function DisplayMap({
         }
         setStoresData(data);
       } catch (error) {
-        setStoresData([]);
+        setError(true);
       }
     };
 
@@ -85,7 +85,7 @@ export default function DisplayMap({
           />
         </Map>
         <Snackbar
-          open={storesData.length === 0}
+          open={error}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
           <Alert severity="error" variant="filled">

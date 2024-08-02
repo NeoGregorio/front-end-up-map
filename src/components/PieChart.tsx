@@ -20,7 +20,7 @@ export default function PieChart() {
         }
         setStoresData(data);
       } catch (error) {
-        setStoresData([]);
+        console.error(error);
       }
     };
 
