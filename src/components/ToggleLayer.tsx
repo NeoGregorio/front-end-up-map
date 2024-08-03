@@ -38,7 +38,7 @@ export default function SelectLayers({
   // Content
   const Selection = (
     <Card className="border-2 border-primary">
-      <CardContent className="font-bold" style={{ paddingBottom: "6px" }}>
+      <CardContent className="font-bold" style={{ paddingBottom: "4px" }}>
         Layers:
         <CardActions>
           <FormGroup>
