@@ -42,7 +42,11 @@ export default function PieChart() {
       <button className="btn font-bold" onClick={() => setChartOpen(true)}>
         Pie Chart
       </button>
-      <Dialog open={chartOpen} onClose={() => setChartOpen(false)}>
+      <Dialog
+        className="border-2 border-primary"
+        open={chartOpen}
+        onClose={() => setChartOpen(false)}
+      >
         <DialogTitle>Store Types Distribution</DialogTitle>
         <Pie
           data={{

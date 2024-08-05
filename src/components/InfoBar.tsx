@@ -92,13 +92,22 @@ export default function InfoBar({ store, open, toggleDrawer }: InfoBarProps) {
           </ListItem>
 
           {display.map((info) => (
-            <Tooltip key={info.text} title={info.text} placement="bottom-start">
-              <ListItem className="hoverable">
-                <ListItemIcon>{info.icon}</ListItemIcon>
-                {info.data ?? "N/A"}
-              </ListItem>
-            </Tooltip>
+            <>
+              <Tooltip
+                key={info.text}
+                title={info.text}
+                placement="bottom-start"
+              >
+                <ListItem className="hoverable">
+                  <ListItemIcon>{info.icon}</ListItemIcon>
+                  {info.data ?? "N/A"}
+                </ListItem>
+              </Tooltip>
+            </>
           ))}
+          <ListItem className="flex justify-center items-center mt-2">
+            <img src={store.store_id + ".jpg"} />
+          </ListItem>
         </List>
       </div>
     </Drawer>
