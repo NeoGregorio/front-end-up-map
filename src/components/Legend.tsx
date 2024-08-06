@@ -8,23 +8,23 @@ import {
 
 const Legends = [
   {
-    color: "#327916",
+    color: "var(--secondary-color)",
     text: "5-Stars",
   },
   {
-    color: "#1976d2",
+    color: "var(--primary-color)",
     text: "4-Stars",
   },
   {
-    color: "#EDD012",
+    color: "var(--ternary-color)",
     text: "3-Stars",
   },
   {
-    color: "orange",
+    color: "gray",
     text: "2-Stars",
   },
   {
-    color: "red",
+    color: "black",
     text: "1-Star",
   },
 ];

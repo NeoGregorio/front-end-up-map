@@ -6,6 +6,7 @@ import {
   Pin,
   useMap,
 } from "@vis.gl/react-google-maps";
+import { DisplayPolyline } from "@/components/Polyline";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
 import { getStores } from "@/components/SampleFetch";
@@ -18,8 +19,8 @@ import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 // Global Variables
-const UPposition = { lat: 14.655582658243429, lng: 121.06909051147275 };
-const zoom = 15.8;
+const UPposition = { lat: 14.655029527326137, lng: 121.06538803086723 };
+const zoom = 15.4;
 const mapID = "DEMO_MAP_ID";
 
 // Typedefs
@@ -78,6 +79,7 @@ export default function DisplayMap({
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string}>
       <div style={{ height: "100vh", width: "100%" }}>
         <Map defaultZoom={zoom} defaultCenter={UPposition} mapId={mapID}>
+          <DisplayPolyline />
           <Markers
             points={points}
             setInfoDisplay={setInfoDisplay}
@@ -164,25 +166,25 @@ const Markers = ({ points, setInfoDisplay, setOpen }: Props) => {
 const setIcon = (type: string) => {
   switch (type) {
     case "restaurant":
-      return <RestaurantIcon fontSize="small" />;
+      return <RestaurantIcon fontSize="small" className="text-white" />;
     case "cafe":
-      return <LocalCafeIcon fontSize="small" />;
+      return <LocalCafeIcon fontSize="small" className="text-white" />;
     default:
-      return <StoreIcon fontSize="small" />;
+      return <StoreIcon fontSize="small" className="text-white" />;
   }
 };
 
 const SetColor = (rating: number) => {
   switch (true) {
     case rating === 5:
-      return ["#327916", "#013208"];
+      return ["var(--secondary-color)", "#013208"];
     case rating >= 4:
-      return ["#1976d2", "#000058"];
+      return ["var(--primary-color)", "#470c10"];
     case rating >= 3:
-      return ["#EDD012", "#8B8000"];
+      return ["var(--ternary-color)", "#8B8000"];
     case rating >= 2:
-      return ["orange", "#8b4c00"];
+      return ["gray", "black"];
     default:
-      return ["red", "#8b0000"];
+      return ["black", "black"];
   }
 };

@@ -14,6 +14,7 @@ export default function NavBar() {
       // clips the infobar drawer under the navbar
     >
       <Toolbar
+        className="bg-primary"
         variant="dense"
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >

@@ -5,7 +5,7 @@ import SelectLayers from "@/components/ToggleLayer";
 import NavBar from "@/components/NavBar";
 import LegendWindow from "@/components/Legend";
 import InfoBar from "@/components/InfoBar";
-import PieChart from "@/components/PieChart";
+import PieChart from "@/components/Statistics";
 
 export default function Main() {
   // Callback function to handle the state change of the checkboxes child component
