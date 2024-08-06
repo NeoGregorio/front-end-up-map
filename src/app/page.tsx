@@ -6,6 +6,7 @@ import NavBar from "@/components/NavBar";
 import LegendWindow from "@/components/Legend";
 import InfoBar from "@/components/InfoBar";
 import PieChart from "@/components/Statistics";
+import Search from "@/components/Search";
 
 export default function Main() {
   // Callback function to handle the state change of the checkboxes child component
@@ -47,6 +48,7 @@ export default function Main() {
 
       <div>
         <div className="overlay m-2.5 mt-24">
+          {/* <Search setInfoDisplay={setInfoDisplay} setOpen={setOpen} /> */}
           <SelectLayers
             layersState={layersState}
             handleLayersChange={handleLayersChange}

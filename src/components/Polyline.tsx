@@ -135,7 +135,6 @@ export const DisplayPolyline = () => (
     path={path}
     strokeColor="#8C161E"
     strokeOpacity={0}
-    //strokeWeight={0.5}
     icons={[
       {
         icon: {
