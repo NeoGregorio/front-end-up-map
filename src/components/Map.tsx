@@ -8,7 +8,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
-import { getStores } from "@/data/SampleFetch";
+import { getStores } from "@/components/SampleFetch";
 
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";

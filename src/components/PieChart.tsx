@@ -1,7 +1,7 @@
 "use client";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, Title, ArcElement, Tooltip, Legend } from "chart.js";
-import { getStores } from "@/data/SampleFetch";
+import { getStores } from "@/components/SampleFetch";
 import { useState, useEffect } from "react";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
@@ -40,7 +40,7 @@ export default function PieChart() {
   return (
     <>
       <button className="btn font-bold" onClick={() => setChartOpen(true)}>
-        Pie Chart
+        Statistics
       </button>
       <Dialog
         className="border-2 border-primary"
