@@ -100,7 +100,7 @@ export default function InfoBar({ store, open, toggleDrawer }: InfoBarProps) {
             </Tooltip>
           ))}
           <ListItem className="flex justify-center items-center mt-2">
-            <img src={store.store_id + ".jpg"} />
+            <img src={store.store_id + ".jpg"} alt={store.store_id} />
           </ListItem>
         </List>
       </div>
