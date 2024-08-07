@@ -32,10 +32,10 @@ const Legends = [
 export default function LegendWindow() {
   const Legend = (
     <Card className="border-2 border-primary">
-      <CardContent>
-        <h1 className="font-bold mb-2">Legend:</h1>
+      <CardContent style={{ paddingBottom: "12px" }}>
+        <p className="font-bold mb-2 text-md">Legend:</p>
         {Legends.map((leg) => (
-          <div key={leg.text} className="flex">
+          <div key={leg.text} className="flex text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24px"

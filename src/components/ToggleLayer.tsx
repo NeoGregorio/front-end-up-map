@@ -38,7 +38,10 @@ export default function SelectLayers({
   // Content
   const Selection = (
     <Card className="border-2 border-primary">
-      <CardContent className="font-bold" style={{ paddingBottom: "4px" }}>
+      <CardContent
+        className="font-bold text-md"
+        style={{ paddingBottom: "0px" }}
+      >
         Layers:
         <CardActions>
           <FormGroup>
@@ -47,6 +50,7 @@ export default function SelectLayers({
                 key={name}
                 control={
                   <Checkbox
+                    size="small"
                     color="success"
                     name={name}
                     checked={layersState[name]}
