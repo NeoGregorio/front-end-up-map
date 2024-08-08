@@ -113,9 +113,9 @@ const wheelechairAccess = (wae: boolean | null) => {
     case null:
       return null;
     case false:
-      return "No Wheelechair Accessible Entrance";
+      return "No Wheelchair Accessible Entrance";
     default:
-      return "Wheelechair Accessible Entrance";
+      return "Wheelchair Accessible Entrance";
   }
 };
 
